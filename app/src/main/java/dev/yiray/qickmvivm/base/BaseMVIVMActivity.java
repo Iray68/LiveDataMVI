@@ -3,6 +3,7 @@ package dev.yiray.qickmvivm.base;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
+import android.util.Pair;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -21,6 +22,12 @@ public abstract class BaseMVIVMActivity<I, S, VM extends BaseViewModel<S, I>>
         this.mViewModel = bindViewModel();
         mViewModel.states().observe(this, this::render);
         mViewModel.errors().observe(this, this::showErrorMsg);
+        mViewModel.sideEffects().observe(this, event -> {
+            Pair<S, S> statePair = event.getSideEffectPair();
+            if (statePair != null) {
+                handleSideEffect(statePair.first, statePair.second);
+            }
+        });
     }
 
     @Override

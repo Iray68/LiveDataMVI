@@ -3,6 +3,7 @@ package dev.yiray.qickmvivm.base;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
+import android.util.Pair;
 import android.view.View;
 
 import androidx.annotation.NonNull;
@@ -21,8 +22,13 @@ public abstract class BaseMVIVMFragment<I, S, VM extends BaseViewModel<S, I>> ex
         this.mViewModel = bindViewModel();
         mViewModel.states().observe(getViewLifecycleOwner(), this::render);
         mViewModel.errors().observe(getViewLifecycleOwner(), this::showErrorMsg);
-        mViewModel.sideEffects().observe(getViewLifecycleOwner(), statePair ->
-                handleSideEffect(statePair.first, statePair.second));
+
+        mViewModel.sideEffects().observe(getViewLifecycleOwner(), event -> {
+            Pair<S, S> statePair = event.getSideEffectPair();
+            if (statePair != null) {
+                handleSideEffect(statePair.first, statePair.second);
+            }
+        });
     }
 
     @Override

@@ -1,8 +1,5 @@
 package dev.yiray.qickmvivm.base;
 
-
-import android.util.Pair;
-
 import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
@@ -17,7 +14,7 @@ public abstract class BaseViewModel<S, I> extends ViewModel implements IViewMode
     private Observable<S> stateObservable;
     private MutableLiveData<S> stateLiveData;
     private MutableLiveData<Throwable> errorLiveData;
-    private MutableLiveData<Pair<S, S>> sideEffectLiveData;
+    private MutableLiveData<SideEffectEvent<S>> sideEffectLiveData;
 
     private CompositeDisposable compositeDisposable;
     private S dumpState;
@@ -46,7 +43,7 @@ public abstract class BaseViewModel<S, I> extends ViewModel implements IViewMode
     }
 
     @Override
-    public LiveData<Pair<S, S>> sideEffects() {
+    public LiveData<SideEffectEvent<S>> sideEffects() {
         return sideEffectLiveData;
     }
 
@@ -80,6 +77,6 @@ public abstract class BaseViewModel<S, I> extends ViewModel implements IViewMode
 
     @Override
     public void handleSideEffects(S state, S sideEffect) {
-        sideEffectLiveData.postValue(new Pair<>(state, sideEffect));
+        sideEffectLiveData.postValue(new SideEffectEvent<>(state, sideEffect));
     }
 }
