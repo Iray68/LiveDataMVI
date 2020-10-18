@@ -10,9 +10,11 @@
     <string name="menu_home">Home</string>
     <string name="menu_gallery">Gallery</string>
     <string name="menu_slideshow">Slideshow</string>
+    <string name="label_task_list">Tasks</string>
 
     <string name="welcome_hint">Hi, </string>
     <string name="input_hint">Name</string>
     <string name="checkbox_hint">Prepare to check the list</string>
     <string name="button_next">To Next Page</string>
+    <string name="button_add">Add</string>
 </resources>

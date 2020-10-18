@@ -8,8 +8,10 @@ import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.core.Observable;
 
 public class HomeViewModel extends BaseViewModel<HomeViewState, HomeView.Action> {
+    private TaskInteractor interactor;
 
     public HomeViewModel() {
+        interactor = new TaskInteractor();
     }
 
     @Override
@@ -20,11 +22,14 @@ public class HomeViewModel extends BaseViewModel<HomeViewState, HomeView.Action>
                 .map(HomeViewState.CheckBoxState::new);
         Observable<HomeViewState> observableNext = intent.observableNextPage()
                 .map(aBoolean -> new HomeViewState.NextPage());
+        Observable<HomeViewState> observableListUpdated = intent.observableUpdated()
+                .map(updatedTask -> new HomeViewState.ListModified(updatedTask.getPosition(), updatedTask.getTask()));
 
         Observable<HomeViewState> intents = Observable.merge(
                 observableInput,
                 observableCheckBox,
-                observableNext
+                observableNext,
+                observableListUpdated
         ).observeOn(AndroidSchedulers.mainThread());
 
         HomeViewState initialState = new HomeViewState.ViewState.Builder().build();
@@ -43,6 +48,15 @@ public class HomeViewModel extends BaseViewModel<HomeViewState, HomeView.Action>
                 handleSideEffects(previousState, newState);
             }
 
-        return previousState.toViewState().copy(newState.toViewState());
+            HomeViewState state = newState;
+
+            if (newState instanceof HomeViewState.ListModified) {
+                state = interactor.updateTaskList(
+                        previousState.toViewState(),
+                        (HomeViewState.ListModified) newState
+                );
+            }
+
+            return previousState.toViewState().copy(state.toViewState());
     }
 }

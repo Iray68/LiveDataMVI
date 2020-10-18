@@ -1,7 +1,7 @@
 package dev.yiray.qickmvivm.ui.home;
 
+import android.content.Context;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,10 +9,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.lifecycle.ViewModelProviders;
 
 import com.jakewharton.rxbinding4.view.RxView;
 import com.jakewharton.rxbinding4.widget.RxCompoundButton;
@@ -20,18 +17,30 @@ import com.jakewharton.rxbinding4.widget.RxTextView;
 
 import java.util.concurrent.TimeUnit;
 
-import dev.yiray.qickmvivm.R;
 import dev.yiray.qickmvivm.base.BaseMVIVMFragment;
 import dev.yiray.qickmvivm.databinding.FragmentHomeBinding;
 import dev.yiray.qickmvivm.ui.ViewModelFactory;
 import io.reactivex.rxjava3.core.Observable;
 
 public class HomeFragment extends BaseMVIVMFragment<HomeView.Action, HomeViewState, HomeViewModel>
-    implements  HomeView, HomeView.Action{
-
-    private final static String TAG = HomeFragment.class.getSimpleName();
+    implements HomeView, HomeView.Action{
 
     private FragmentHomeBinding binding;
+    private Coordinator coordinator;
+
+    public interface Coordinator {
+        void toTaskList();
+    }
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        try {
+            coordinator = (Coordinator) context;
+        } catch (ClassCastException e) {
+            throw new ClassCastException("MUST implement Coordination: " + context.toString());
+        }
+    }
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -68,8 +77,7 @@ public class HomeFragment extends BaseMVIVMFragment<HomeView.Action, HomeViewSta
     @Override
     public void handleSideEffect(HomeViewState state, HomeViewState sideEffect) {
         if (sideEffect instanceof HomeViewState.NextPage) {
-            Log.i(TAG, "TO NEXT PAGE");
-            // TODO: to next fragment (TO-DO List)
+            coordinator.toTaskList();
         }
     }
 
@@ -88,5 +96,10 @@ public class HomeFragment extends BaseMVIVMFragment<HomeView.Action, HomeViewSta
         return RxView.clicks(binding.buttonNext)
                 .debounce(200, TimeUnit.MILLISECONDS)
                 .map(e -> true);
+    }
+
+    @Override
+    public Observable<UpdateTask> observableUpdated() {
+        return Observable.empty();
     }
 }
