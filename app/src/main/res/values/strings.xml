@@ -8,7 +8,7 @@
     <string name="action_settings">Settings</string>
 
     <string name="menu_home">Home</string>
-    <string name="menu_gallery">Gallery</string>
+    <string name="menu_search">Search</string>
     <string name="menu_slideshow">Slideshow</string>
     <string name="label_task_list">Tasks</string>
 
@@ -17,4 +17,8 @@
     <string name="checkbox_hint">Prepare to check the list</string>
     <string name="button_next">To Next Page</string>
     <string name="button_add">Add</string>
+    <string name="button_search">Search</string>
+    <string name="search_hint">Search Github account (Example: iray68)</string>
+    <string name="hint_not_found">Cannot find the account</string>
+
 </resources>
