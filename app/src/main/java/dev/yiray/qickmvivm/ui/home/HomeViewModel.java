@@ -10,6 +10,8 @@ import io.reactivex.rxjava3.core.Observable;
 public class HomeViewModel extends BaseViewModel<HomeViewState, HomeView.Action> {
     private TaskInteractor interactor;
 
+    private HomeViewState memorized;
+
     public HomeViewModel() {
         interactor = new TaskInteractor();
     }
@@ -32,10 +34,16 @@ public class HomeViewModel extends BaseViewModel<HomeViewState, HomeView.Action>
                 observableListUpdated
         ).observeOn(AndroidSchedulers.mainThread());
 
-        HomeViewState initialState = new HomeViewState.ViewState.Builder().build();
+        HomeViewState state;
+
+        if (memorized == null) {
+            state =  new HomeViewState.ViewState.Builder().build();
+        } else {
+            state = memorized;
+        }
 
         Observable<HomeViewState> stateObservable =
-                intents.scan(initialState, this::reducer);
+                intents.scan(state, this::reducer);
 
         subscribe(stateObservable);
     }
@@ -57,6 +65,8 @@ public class HomeViewModel extends BaseViewModel<HomeViewState, HomeView.Action>
                 );
             }
 
-            return previousState.toViewState().copy(state.toViewState());
+            memorized = previousState.toViewState().copy(state.toViewState());
+
+            return memorized;
     }
 }

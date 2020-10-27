@@ -83,7 +83,8 @@ public class HomeFragment extends BaseMVIVMFragment<HomeView.Action, HomeViewSta
 
     @Override
     public Observable<CharSequence> observableInput() {
-        return RxTextView.textChanges(binding.input);
+        return RxTextView.textChanges(binding.input)
+                .skipInitialValue();
     }
 
     @Override

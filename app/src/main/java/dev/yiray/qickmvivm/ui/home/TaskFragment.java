@@ -80,7 +80,11 @@ public class TaskFragment extends BaseMVIVMFragment<HomeView.Action, HomeViewSta
 
     @Override
     public void render(HomeViewState state) {
-        taskList = state.toViewState().getTaskList();
+        List<Task> updatedList = state.toViewState().getTaskList();
+
+        if (updatedList != null) {
+            taskList = state.toViewState().getTaskList();
+        }
         adapter.notifyDataSetChanged();
     }
 

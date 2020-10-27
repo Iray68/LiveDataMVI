@@ -22,7 +22,6 @@ public interface HomeViewState extends BaseState<HomeViewState.ViewState> {
 
             Builder () {
                 isChecked = false;
-                taskList = new ArrayList<>();
             }
 
             Builder(ViewState origin){
