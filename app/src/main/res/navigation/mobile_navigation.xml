@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/nav_home"
-        android:name="dev.yiray.qickmvivm.ui.home.HomeFragment"
+        android:name="dev.yiray.livedatamvi.ui.home.HomeFragment"
         android:label="@string/menu_home"
         tools:layout="@layout/fragment_home" >
         <action
@@ -17,17 +17,17 @@
 
     <fragment
         android:id="@+id/nav_gallery"
-        android:name="dev.yiray.qickmvivm.ui.search.SearchFragment"
+        android:name="dev.yiray.livedatamvi.ui.search.SearchFragment"
         android:label="@string/menu_search"
         tools:layout="@layout/fragment_search" />
 
     <fragment
         android:id="@+id/nav_slideshow"
-        android:name="dev.yiray.qickmvivm.ui.slideshow.SlideshowFragment"
+        android:name="dev.yiray.livedatamvi.ui.slideshow.SlideshowFragment"
         android:label="@string/menu_slideshow"
         tools:layout="@layout/fragment_slideshow" />
     <fragment
         android:id="@+id/nav_task"
-        android:name="dev.yiray.qickmvivm.ui.home.TaskFragment"
+        android:name="dev.yiray.livedatamvi.ui.home.TaskFragment"
         android:label="@string/label_task_list" />
 </navigation>
